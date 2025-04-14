@@ -16,14 +16,15 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 file(GLOB CPP_SRC "src/*.cpp")
 file(GLOB CPP_SRC "include/*.h")
+message("Header files found: ${HEADER_SRC}")
 
 add_library(${PROJECT_NAME} ${CPP_SRC})
 set_target_properties(${PROJECT_NAME} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION_MAJOR}
-        PUBLIC_HEADER ${HEADERS_SRC})
+        PUBLIC_HEADER ${HEADER_SRC})
 
-configure_file(mylib.pc.in mylib.pc @ONLY)
+configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
 target_include_directories(${PROJECT_NAME} PRIVATE "include/")
 target_link_libraries(${PROJECT_NAME} spdlog::spdlog)
 
@@ -31,4 +32,4 @@ install(TARGETS ${PROJECT_NAME}}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-install(FILES ${CMAKE_BINARY_DIR}/mylib.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
