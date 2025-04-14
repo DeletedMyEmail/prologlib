@@ -15,7 +15,7 @@ FetchContent_MakeAvailable(spdlog)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 file(GLOB CPP_SRC "src/*.cpp")
-file(GLOB CPP_SRC "include/*.h")
+file(GLOB HEADER_SRC "include/*.h")
 message("Header files found: ${HEADER_SRC}")
 
 add_library(${PROJECT_NAME} ${CPP_SRC})
@@ -28,7 +28,7 @@ configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
 target_include_directories(${PROJECT_NAME} PRIVATE "include/")
 target_link_libraries(${PROJECT_NAME} spdlog::spdlog)
 
-install(TARGETS ${PROJECT_NAME}}
+install(TARGETS ${PROJECT_NAME}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
