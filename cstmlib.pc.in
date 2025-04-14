@@ -6,7 +6,8 @@ includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
 Name: @PROJECT_NAME@
 Description: @PROJECT_DESCRIPTION@
 Version: @PROJECT_VERSION@
+URL: https://github.com/DeletedMyEmail/CustomLibs/tree/cpp
 
 Requires:
-Libs: -L${libdir} -lmylib
+Libs: -L${cstmlib} -cstmlib
 Cflags: -I${includedir}

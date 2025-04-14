@@ -1,6 +1,6 @@
-#include "Profiling.h"
+#include "cstmlib/Profiling.h"
+#include "cstmlib/Log.h"
 #include <cassert>
-#include <Log.h>
 #include <sstream>
 #include <x86intrin.h>
 #include <sys/time.h>
