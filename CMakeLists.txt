@@ -22,10 +22,10 @@ add_library(${PROJECT_NAME} ${CPP_SRC})
 set_target_properties(${PROJECT_NAME} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION_MAJOR}
-        PUBLIC_HEADER ${HEADER_SRC})
+        PUBLIC_HEADER "${HEADER_SRC}")
 
 configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
-target_include_directories(${PROJECT_NAME} PRIVATE "include/")
+target_include_directories(${PROJECT_NAME} PUBLIC "include/")
 target_link_libraries(${PROJECT_NAME} spdlog::spdlog)
 
 install(TARGETS ${PROJECT_NAME}
