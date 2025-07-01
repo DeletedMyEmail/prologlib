@@ -18,7 +18,7 @@
     #define PROFILE_SCOPE_NAMED(name)
     #define PROFILE_SCOPE()
 
-    #define REP_TEST(func, bytesProcessed, maxTotalReps, maxRepsSinceLastMin) pal::RepetitionResult{}
+    #define REP_TEST(func, bytesProcessed, maxTotalReps, maxRepsSinceLastMin) 
 #endif
 
 namespace cstm
