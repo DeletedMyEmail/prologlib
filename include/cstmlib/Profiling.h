@@ -57,13 +57,11 @@ namespace cstm
 
     struct RepetitionResult
     {
-        uint64_t minTSCs, maxTSCs;
-        // bytes per second
-        double maxThroughput, minThroughput;
+        uint64_t minTSCs, maxTSCs, avgTSCs, bytesProcessed;
         uint32_t repetitions, bestRepIndex, worstRepIndex;
 
         operator std::string() const;
     };
 
-    RepetitionResult repetitionTest(const std::function<void()>& func, uint64_t bytesProcessed = 0, uint32_t maxTotalReps = 512, uint32_t maxRepsSinceLastMin = 16);
+    RepetitionResult repetitionTest(const std::function<void()>& func, uint64_t bytesProcessed = 0, uint32_t maxTotalReps = 512, uint32_t maxRepsSinceLastMin = 128);
 }

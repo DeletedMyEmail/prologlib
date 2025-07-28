@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
-project(cstmlib LANGUAGES CXX VERSION 1.0.0 DESCRIPTION "Library for logging and performance profiling")
+project(cstmlib LANGUAGES CXX VERSION 1.0.1 DESCRIPTION "Library for logging and performance profiling")
+option(BUILD_TESTING "Build the tests for this project" ON)
 include(GNUInstallDirs)
 set(CMAKE_CXX_STANDARD 20)
 add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
@@ -34,3 +35,8 @@ install(TARGETS ${PROJECT_NAME}
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
 
 install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
