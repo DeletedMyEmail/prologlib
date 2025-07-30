@@ -15,9 +15,9 @@
     #define LOG_INIT()
     #define SET_PATTERN(x)
 
-    #define LOG_WARN(x)
-    #define LOG_INFO(x)
-    #define LOG_ERROR(x)
+    #define LOG_WARN(x...)
+    #define LOG_INFO(x...)
+    #define LOG_ERROR(x...)
 #endif
 
 namespace cstm
