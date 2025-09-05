@@ -85,7 +85,7 @@ namespace cstm
         assert(s_StartTime != 0);
         const uint64_t programTime = __rdtsc() - s_StartTime;
 
-        std::string result = std::format("------------ Profiler results ------------\nTotal Time: {} tscs / {:.4f} ms", programTime, tscsToMs(programTime));
+        std::string result = std::format("------------ Profiler results ------------\nTotal Time: {} tscs / {:.4f} ms\n", programTime, tscsToMs(programTime));
 
         for(uint32_t i = 0; i < s_StampCount; ++i)
         {
