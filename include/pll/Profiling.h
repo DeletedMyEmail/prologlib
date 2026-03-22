@@ -4,13 +4,13 @@
 #include <functional>
 
 #ifndef NOPROFILE
-    #define PROFILER_INIT(maxStamps) cstm::Profiler::init(maxStamps)
-    #define PROFILER_END() cstm::Profiler::end()
+    #define PROFILER_INIT(maxStamps) pll::sProfiler.init(maxStamps)
+    #define PROFILER_END() pll::sProfiler.end()
 
-    #define PROFILE_SCOPE_NAMED(name) cstm::Timer timer(name)
+    #define PROFILE_SCOPE_NAMED(name) pll::Timer timer(name)
     #define PROFILE_SCOPE() PROFILE_SCOPE_NAMED(__FUNCTION__)
 
-    #define REP_TEST(func, bytesProcessed, maxTotalReps, maxRepsSinceLastMin) cstm::repetitionTest(func, bytesProcessed, maxTotalReps, maxRepsSinceLastMin)
+    #define REP_TEST(func, bytesProcessed, maxTotalReps, maxRepsSinceLastMin) pll::repetitionTest(func, bytesProcessed, maxTotalReps, maxRepsSinceLastMin)
 #else
     #define PROFILER_INIT(maxStamps)
     #define PROFILER_END()
@@ -21,7 +21,7 @@
     #define REP_TEST(func, bytesProcessed, maxTotalReps, maxRepsSinceLastMin) 
 #endif
 
-namespace cstm
+namespace pll
 {
     struct TimeStamp
     {
@@ -29,19 +29,16 @@ namespace cstm
         const char* name;
     };
 
-    class Profiler{
-    public:
-        static void init(uint32_t maxTimeStamps = 10);
-        static void end();
-        static void addTimeStamp(TimeStamp timeStamp);
+    inline struct Profiler
+    {
+        void init(uint32_t maxTimeStamps = 10);
+        void end();
+        void addTimeStamp(TimeStamp timeStamp);
 
-        static uint32_t getMaxTimeStamps() { return s_MaxStampCount; }
-        static uint32_t getTimeStampCount() { return s_StampCount; }
-    private:
-        static uint64_t s_StartTime;
-        static TimeStamp* s_TimeStamps;
-        static uint32_t s_StampCount, s_MaxStampCount;
-    };
+        TimeStamp* timeStamps{nullptr};
+        uint64_t startTime{0};
+        uint32_t stampCount{0}, maxStampCount{0};
+    } sProfiler;
 
     class Timer
     {
@@ -49,8 +46,8 @@ namespace cstm
         Timer(const char* name);
         ~Timer();
     private:
-        const char* m_Name;
-        uint64_t m_StartTime;
+        const char* mName;
+        uint64_t mStartTime{};
     };
 
     double tscsToMs(uint64_t tscs);

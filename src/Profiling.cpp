@@ -1,5 +1,5 @@
-#include "cstmlib/Profiling.h"
-#include "cstmlib/Log.h"
+#include "pll/Profiling.h"
+#include "pll/Log.h"
 #include <cassert>
 #include <sstream>
 #include <x86intrin.h>
@@ -9,13 +9,8 @@ static double toTotalPercent(uint64_t part, uint64_t total);
 static uint64_t estimateCPUFreq(uint64_t testPeriod = 100);
 static std::string throughputToString(double throughput);
 
-namespace cstm
+namespace pll
 {
-    TimeStamp* Profiler::s_TimeStamps = nullptr;
-    uint32_t Profiler::s_StampCount = 0;
-    uint32_t Profiler::s_MaxStampCount = 0;
-    uint64_t Profiler::s_StartTime = 0;
-
     RepetitionResult repetitionTest(const std::function<void()>& func, const uint64_t bytesProcessed, const uint32_t maxTotalReps, const uint32_t maxRepsSinceLastMin)
     {
         RepetitionResult res{};
@@ -73,51 +68,50 @@ namespace cstm
 
     void Profiler::init(const uint32_t maxTimeStamps)
     {
-        assert(s_TimeStamps == nullptr);
+        assert(timeStamps == nullptr);
 
-        s_MaxStampCount = maxTimeStamps;
-        s_TimeStamps = new TimeStamp[maxTimeStamps];
-        s_StartTime = __rdtsc();
+        maxStampCount = maxTimeStamps;
+        timeStamps = new TimeStamp[maxTimeStamps];
+        startTime = __rdtsc();
     }
 
     void Profiler::end()
     {
-        assert(s_StartTime != 0);
-        const uint64_t programTime = __rdtsc() - s_StartTime;
+        assert(startTime != 0);
+        const uint64_t programTime = __rdtsc() - startTime;
 
         std::string result = std::format("------------ Profiler results ------------\nTotal Time: {} tscs / {:.4f} ms\n", programTime, tscsToMs(programTime));
 
-        for(uint32_t i = 0; i < s_StampCount; ++i)
+        for(uint32_t i = 0; i < stampCount; ++i)
         {
-            const auto& [tscs, name] = s_TimeStamps[i];
+            const auto& [tscs, name] = timeStamps[i];
             result += std::format("Time for {}: {} tscs / {:.4f} ms / {:.4f}% of total\n", name, tscs, tscsToMs(tscs), toTotalPercent(tscs, programTime));
         }
 
-        delete[] s_TimeStamps;
+        delete[] timeStamps;
         LOG_INFO("{}", result);
     }
 
     void Profiler::addTimeStamp(const TimeStamp timeStamp)
     {
-        assert(s_StampCount < s_MaxStampCount);
-        s_TimeStamps[s_StampCount++] = timeStamp;
+        assert(stampCount < maxStampCount);
+        timeStamps[stampCount++] = timeStamp;
     }
 
     Timer::Timer(const char* name)
-        : m_Name(name), m_StartTime(__rdtsc())
+        : mName(name), mStartTime(__rdtsc())
     {
     }
 
     Timer::~Timer()
     {
         const uint64_t endTime = __rdtsc();
-        Profiler::addTimeStamp({endTime - m_StartTime, m_Name});
+        sProfiler.addTimeStamp({endTime - mStartTime, mName});
     }
 
     double tscsToMs(const uint64_t tscs)
     {
         static uint64_t CPUFreq = estimateCPUFreq();
-
         return static_cast<double>(tscs) * 1000.0 / static_cast<double>(CPUFreq);
     }
 }

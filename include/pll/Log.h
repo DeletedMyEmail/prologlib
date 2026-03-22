@@ -1,15 +1,14 @@
 #pragma once
-
 #include <spdlog/spdlog.h>
 
 #ifndef NOLOG
-    #define LOG_INIT_SPECIFIC(title, lvl, filepath) cstm::Log::init(title, lvl, filepath)
-    #define LOG_INIT() cstm::Log::init(PROJECT_NAME)
-    #define SET_PATTERN(x) cstm::Log::setPattern(x)
+    #define LOG_INIT_SPECIFIC(title, lvl, filepath) pll::Log::init(title, lvl, filepath)
+    #define LOG_INIT() pll::Log::init(PROJECT_NAME)
+    #define SET_PATTERN(x) pll::Log::setPattern(x)
 
-    #define LOG_WARN(x...) cstm::Log::getLogger()->warn(fmt::format(x))
-    #define LOG_INFO(x...) cstm::Log::getLogger()->info(fmt::format(x))
-    #define LOG_ERROR(x...) cstm::Log::getLogger()->error(fmt::format(x))
+    #define LOG_WARN(x...) pll::Log::getLogger()->warn(fmt::format(x))
+    #define LOG_INFO(x...) pll::Log::getLogger()->info(fmt::format(x))
+    #define LOG_ERROR(x...) pll::Log::getLogger()->error(fmt::format(x))
 #else
     #define LOG_INIT_SPECIFIC(title, lvl, filepath)
     #define LOG_INIT()
@@ -20,13 +19,13 @@
     #define LOG_ERROR(x...)
 #endif
 
-namespace cstm
+namespace pll
 {
     class Log
     {
     public:
         static void init(const char* loggerTitle = "App", spdlog::level::level_enum level = spdlog::level::trace, const char* filePath = nullptr);
-        static std::shared_ptr<spdlog::logger>& getLogger() { return s_Logger; }
+        static std::shared_ptr<spdlog::logger>& getLogger() { return sLogger; }
         static void setPattern(uint8_t pattern);
 
         enum PATTERN_TYPE : uint8_t
@@ -37,7 +36,7 @@ namespace cstm
             NAME = 0b1000,
         };
     private:
-        static std::shared_ptr<spdlog::logger> s_Logger;
+        static std::shared_ptr<spdlog::logger> sLogger;
     };
 
 }

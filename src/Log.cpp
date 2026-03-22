@@ -1,18 +1,18 @@
-#include "cstmlib/Log.h"
+#include "pll/Log.h"
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
 
-namespace cstm
+namespace pll
 {
-    std::shared_ptr<spdlog::logger> Log::s_Logger;
+    std::shared_ptr<spdlog::logger> Log::sLogger;
 
     void Log::init(const char* loggerTitle, const spdlog::level::level_enum level, const char* filePath)
     {
         if (filePath)
-            s_Logger = spdlog::basic_logger_mt(loggerTitle, filePath);
+            sLogger = spdlog::basic_logger_mt(loggerTitle, filePath);
         else
-            s_Logger = spdlog::stdout_color_mt(loggerTitle);
-        s_Logger->set_level(level);
+            sLogger = spdlog::stdout_color_mt(loggerTitle);
+        sLogger->set_level(level);
         setPattern(NAME | TIME | LEVEL);
     }
 
@@ -29,6 +29,6 @@ namespace cstm
             fmt += " [%l]";
 
         fmt += ": %v%$";
-        s_Logger->set_pattern(fmt);
+        sLogger->set_pattern(fmt);
     }
 }

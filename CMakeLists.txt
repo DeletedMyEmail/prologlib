@@ -1,16 +1,12 @@
 cmake_minimum_required(VERSION 3.14)
-project(cstmlib LANGUAGES CXX VERSION 1.0.1 DESCRIPTION "Library for logging and performance profiling")
+project(prologlib LANGUAGES CXX VERSION 1.0.1 DESCRIPTION "Library for logging and performance profiling")
 option(BUILD_TESTING "Build the tests for this project" ON)
 include(GNUInstallDirs)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
 
 include(FetchContent)
-FetchContent_Declare(
-        spdlog
-        GIT_REPOSITORY https://github.com/gabime/spdlog.git
-        GIT_TAG v1.15.2
-)
+FetchContent_Declare(spdlog GIT_REPOSITORY https://github.com/gabime/spdlog.git GIT_TAG v1.17.0)
 FetchContent_MakeAvailable(spdlog)
 
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

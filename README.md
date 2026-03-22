@@ -1,6 +1,6 @@
-# C++ Library 
+# prologlib
 
-## Includes
+## Features
 - logger
 - performance profiler
     - scope timer

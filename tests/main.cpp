@@ -1,14 +1,15 @@
-#include "cstmlib/Log.h"
-#include "cstmlib/Profiling.h"
+#include "pll/Log.h"
+#include "pll/Profiling.h"
+#include <gtest/gtest.h>
 
 int main(int argc, char **argv)
 {
-    LOG_INIT();
-    PROFILER_INIT(0);
+    LOG_INIT_SPECIFIC("Test", spdlog::level::info, nullptr);
+    PROFILER_INIT(10);
 
-    int x = 0;
-    const auto res = REP_TEST([&](){std::this_thread::sleep_for(std::chrono::milliseconds(10));}, 100, 100, 100);
-    LOG_INFO("Rep Test:\n\n{}\n", std::string(res));
+    ::testing::InitGoogleTest(&argc, argv);
+    const int res = RUN_ALL_TESTS();
 
     PROFILER_END();
+    return res;
 }
